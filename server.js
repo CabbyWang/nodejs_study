@@ -2,23 +2,16 @@ const http = require('http');
 const fs = require('fs');
 
 var server = http.createServer(function (req, res) {
-    console.log(req.url);
-    switch (req.url) {
-        case '/':
-            console.log("this is /");
-            res.write("this is /");
-            break;
-        case '/index.html':
-            console.log("this is index.html");
-            res.write("this is index.html");
-            break
+    var file_name = './www' + req.url;
 
-        default:
-            console.log("404");
-            res.write("404");
-            break;
-    };
-    res.end();
+    fs.readFile(file_name, function (err, data) {
+        if (err){
+            res.write('404');
+        }else{
+            res.write(data);
+        }
+        res.end()
+    })
 });
 
 server.listen(8888);
